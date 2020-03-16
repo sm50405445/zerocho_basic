@@ -14,6 +14,10 @@ const parseCookie = (cookie = '') => {
         },{})
 }
 
+const session = {
+
+}
+
 const server = http.createServer((req,res)=>{
     const cookies = parseCookie(req.headers.cookie)
     console.log(cookies)
