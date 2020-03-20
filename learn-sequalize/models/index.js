@@ -13,4 +13,13 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
+db.User = require('./user')(sequelize,Sequelize)
+db.Comment = require('./comment')(sequelize,Sequelize)
+
+db.User.hasMany(db.Comment,{foreignKey:'commentor',sourceKey:'id'})
+db.Comment.belongsTo(db.User,{foreignKey:'commentor',targetKey:'id'})
+
+// hasOne 1대1
+// belongs to
+
 module.exports = db
