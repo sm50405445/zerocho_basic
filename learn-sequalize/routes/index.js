@@ -6,7 +6,7 @@ const {User} = require('../models')
 router.get('/', function(req, res, next) {
   User.findAll()
   .then((users)=>{
-    res.render('sequelize',{ittle:'시퀄라이저 연습',users:users})
+    res.render('sequelize',{title:'시퀄라이저 연습',users:users})
   })
   .catch((err)=>{
     console.log(err)
