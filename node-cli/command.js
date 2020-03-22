@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 const fs = require('fs')
 const path = require('path')
-const readline = require('readline')
+// const readline = require('readline')
+const inquirer = require('inquirer')
+const program = require('commander')
+
 
 let rl;
 let type = process.argv[2]
@@ -78,8 +81,10 @@ const makeTemplate = () => {
     }
 }
 
+let triggered = false;
 
-const program = require('commander')
+// console.log(triggered)
+
 program
     .version('0.0.1','-v, --viersion')
     .usage('[options]')
@@ -94,13 +99,51 @@ program
     .option('-d, --directory [path]','생성 경로를 입력하세요','.')
     .action((type,options)=>{
         makeTemplate(type,options.name,options.directory)
+        triggered = true;
     })
+    
+// console.log(triggered)
 
 program
     .command('*',{noHelp:true})
     .action(()=>{
         console.log('해당 명령어를 찾을 수 없습니다')
         program.help()
+        triggered = true;
     })
 
-program.parse(process.argv)
+// console.log(triggered)
+
+program
+    .parse(process.argv)
+
+console.log(triggered)
+if(!triggered){
+    inquirer.prompt([
+     {
+        type:'list',
+        name:'type',
+        message:'템플릿 종류를 선택하세요',
+        choices:['html','express-router']
+     },{
+        type:'input',
+        name:'name',
+        message:'파일의 이름을 입력하세요',
+        default:'index'
+     },{
+        type:'input',
+        name:'directory',
+        message:'파일이 위치할 폴더의 경로를 입력하세요',
+        default:'.'
+     },{
+        type:'confirm',
+        name:'confirm',
+        message:'생성하시겠습니까?'
+     }])
+    .then((answers)=>{
+        if(answers.confirm){
+            makeTemplate(answers.type,answers.name,answers.directory)
+        }
+    })
+}
+
