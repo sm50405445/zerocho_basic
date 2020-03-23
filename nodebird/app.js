@@ -4,11 +4,16 @@ const morgan = require('morgan')
 const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
+const passport = require('passport')
+
 require('dotenv').config();
 
-const indexRouter = require('./routes/pages')
+const pageRouter = require('./routes/pages')
+const { sequelize } = require('./models')
+const passportConfig = require('./passport')
 
 const app = express();
+sequelize.sync()
 
 app.set('view engine','pug')
 app.set('views',path.join(__dirname,'views'))
@@ -29,8 +34,13 @@ app.use(session({
     }
 }))
 app.use(flash())
+//설정초기화
+app.use(passport.initialize())
+//사용자 정보 세션
+//express 세션보다 밑에 있어야함
+app.use(passport.session())
 
-app.use('/',indexRouter)
+app.use('/',pageRouter)
 
 app.use((req,res,next)=>{
     const err = new Error('Not Found Page')
@@ -38,12 +48,12 @@ app.use((req,res,next)=>{
     next(err)
 })
 
-app.use((req,res,next)=>{
-    res.locals.message = err.message
-    res.locals.error = req.app.get('env'==='development' ? err:{})
-    res.status(err.status || 500)
-    res.render('error')
-})
+app.use((err, req, res, next) => {
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
+});
 
 app.listen(process.env.PORT,()=>{
     console.log(`${process.env.PORT} 포트에서 서버 실행`)
