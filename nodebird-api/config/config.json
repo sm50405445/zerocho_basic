@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "admin",
+    "password": "admin1234",
+    "database": "nodebird",
+    "host": "exampleinstance.c0ysfo9odike.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql",
+    "operatorAliases":false
+  },
+  "test": { 
+    "username": "admin",
+    "password": "admin1234",
+    "database": "nodebird",
+    "host": "exampleinstance.c0ysfo9odike.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql",
+    "operatorAliases":false
+  },
+  "production": {
+    "username": "admin",
+    "password": "admin1234",
+    "database": "nodebird",
+    "host": "exampleinstance.c0ysfo9odike.ap-northeast-2.rds.amazonaws.com",
+    "dialect": "mysql",
+    "operatorAliases":false
+  }
+}
