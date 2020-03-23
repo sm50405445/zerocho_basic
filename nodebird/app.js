@@ -41,6 +41,7 @@ app.use(flash())
 app.use(passport.initialize())
 //사용자 정보 세션
 //express 세션보다 밑에 있어야함
+//passport deserialize 실행됨
 app.use(passport.session())
 
 app.use('/',pageRouter)
