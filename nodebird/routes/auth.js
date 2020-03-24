@@ -29,6 +29,9 @@ router.post('/join', isNotLoggedIn, async (req, res, next) => {
 
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (authError, user, info) => {
+    // console.log('authError',authError)
+    // console.log('user',user)
+    // console.log('info',info)
     if (authError) {
       console.error(authError);
       return next(authError);
@@ -38,6 +41,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
       return res.redirect('/');
     }
     return req.login(user, (loginError) => {
+      console.log('user',user)
       if (loginError) {
         console.error(loginError);
         return next(loginError);
