@@ -8,7 +8,7 @@ const passport = require('passport')
 
 require('dotenv').config();
 
-const pageRouter = require('./routes/pages')
+const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
 
 const { sequelize } = require('./models')
@@ -43,7 +43,7 @@ app.use(passport.initialize())
 //express 세션보다 밑에 있어야함
 app.use(passport.session())
 
-app.use('/',pageRouter)
+app.use('/',indexRouter)
 app.use('/auth',authRouter)
 
 app.use((req,res,next)=>{
