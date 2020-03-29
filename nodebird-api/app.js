@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
+const v1 = require('./routes/v1')
 
 const { sequelize } = require('./models')
 const passportConfig = require('./passport')
@@ -45,6 +46,7 @@ app.use(passport.session())
 
 app.use('/',indexRouter)
 app.use('/auth',authRouter)
+app.use('/v1',v1)
 
 app.use((req,res,next)=>{
     const err = new Error('Not Found Page')

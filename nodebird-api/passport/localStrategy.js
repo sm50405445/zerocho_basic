@@ -8,10 +8,12 @@ module.exports = (passport) => {
         passwordField:'password', //req.body.password
     },async (email,passowrd,done)=>{//done(에러,성공,실패)
         try{
-            const exUser = await User.find({where:{email}})
+            const exUser = await User.findOne({where:{email}})
+            // console.log('exuser',exUser)
             if(exUser){
                 //비밀번호 검사
                 const result = await bcrypt.compare(passowrd,exUser.password)
+                console.log('result',result)
                 if(result){
                     done(null,exUser)
                 }else{

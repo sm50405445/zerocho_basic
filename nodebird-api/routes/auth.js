@@ -33,6 +33,7 @@ router.post('/join',isNotLoggedIn,async (req,res,next)=>{
 router.post('/login',(req,res,next)=>{
     //에러,성공,실패
     passport.authenticate('local',(authError,user,info)=>{
+        console.log('user',user)
         if(authError){
             console.error(authError)
             return next(authError)
@@ -47,6 +48,7 @@ router.post('/login',(req,res,next)=>{
                 console.error(loginError)
                 return next(loginError)
             }
+            return res.redirect('/');
         })
     })(req,res,next);
 })
