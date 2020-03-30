@@ -1,7 +1,14 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors')
 
 const router = express.Router();
+
+router.use(cors())
+//router.use(cors('http://localhost:8001'))
+router.use((req,res,next)=>{
+  cors()(req,res,next)
+})
 
 router.get('/test', async (req, res, next) => {
   try {
@@ -28,5 +35,37 @@ router.get('/test', async (req, res, next) => {
     return next(error);
   }
 });
+
+const request = async(req,api)=>{
+  try{
+    if(!req.session.jwt){
+      const tokenResult = await axios.post('http://localhost:8001/v1/token',{
+        clientSecret: process.env.CLIENT_SECRET
+      })
+      req.session.jwt = tokenResult.data.token
+    }
+    return await axios.get(`http://localhost:8001/v1${api}`,{
+      headers:{authorization:req.session.jwt}
+    })
+  }
+  catch(err){
+    console.error(err)
+    if(error.response.status<500)
+        return err.response
+    throw err
+  }
+  
+}
+
+router.get('/mypost',async(req,res,next)=>{
+  try{
+    const result = await request(req,'/posts/my')
+    res.json(result.data)
+  }
+  catch(err){
+    console.error(err)
+    next(err)
+  }
+})
 
 module.exports = router;
