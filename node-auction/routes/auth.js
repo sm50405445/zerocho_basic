@@ -1,4 +1,5 @@
 const express = require('express')
+const passport = require('passport')
 const router = express.Router()
 const{isLoggedIn,isNotLoggedIn} = require('./middlewares')
 const {User} = require('../models')
